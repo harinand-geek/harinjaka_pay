@@ -9,10 +9,13 @@ import PublicLayout from '@/components/PublicLayout'
 import PaymentCard from '@/components/PaymentCard'
 import PaymentDetails from '@/components/PaymentDetails'
 import ThemeToggle from '@/components/ThemeToggle'
+import BottomSheet from '@/components/BottomSheet'
+import { useMediaQuery } from '@/lib/useMediaQuery'
 
 export default function PaymentPage() {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const detailsRef = useRef<HTMLDivElement>(null)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const { data: methods, isLoading, isError } = useQuery({
     queryKey: ['public-payment-methods'],
@@ -23,16 +26,16 @@ export default function PaymentPage() {
     void analyticsApi.trackVisit()
   }, [])
 
-  // Bring the details into view on selection — essential on mobile where the
-  // cards are stacked and the details would otherwise render far below.
+  // Desktop: smooth-scroll the inline details into view on selection.
+  // Mobile uses the bottom sheet instead, so no page scroll there.
   useEffect(() => {
-    if (selectedId == null) return
+    if (!isDesktop || selectedId == null) return
     const el = detailsRef.current
     if (!el) return
     requestAnimationFrame(() =>
       el.scrollIntoView({ behavior: 'smooth', block: 'start' }),
     )
-  }, [selectedId])
+  }, [selectedId, isDesktop])
 
   const handleSelect = (method: PaymentMethod) => {
     setSelectedId(method.id)
@@ -104,11 +107,19 @@ export default function PaymentPage() {
               ))}
             </div>
 
+            {/* Desktop: inline details below the grid */}
             <div ref={detailsRef} className="scroll-mt-6">
               <AnimatePresence mode="wait">
-                {selected && <PaymentDetails key={selected.id} method={selected} />}
+                {isDesktop && selected && (
+                  <PaymentDetails key={selected.id} method={selected} />
+                )}
               </AnimatePresence>
             </div>
+
+            {/* Mobile: details slide up in a bottom sheet */}
+            <BottomSheet open={!isDesktop && !!selected} onClose={() => setSelectedId(null)}>
+              {selected && <PaymentDetails method={selected} embedded />}
+            </BottomSheet>
           </>
         )}
       </div>

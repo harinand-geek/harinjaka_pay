@@ -10,9 +10,11 @@ import MethodIcon from './MethodIcon'
 
 interface PaymentDetailsProps {
   method: PaymentMethod
+  /** When true, drop the card chrome/animation (used inside the mobile sheet). */
+  embedded?: boolean
 }
 
-export default function PaymentDetails({ method }: PaymentDetailsProps) {
+export default function PaymentDetails({ method, embedded = false }: PaymentDetailsProps) {
   const handleCopyAll = async () => {
     if (method.fields.length === 0) return
     const text = method.fields
@@ -30,11 +32,11 @@ export default function PaymentDetails({ method }: PaymentDetailsProps) {
   return (
     <motion.section
       key={method.id}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
+      initial={embedded ? false : { opacity: 0, y: 12 }}
+      animate={embedded ? undefined : { opacity: 1, y: 0 }}
+      exit={embedded ? undefined : { opacity: 0, y: -8 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="details-section mb-8 rounded-xl p-6 md:p-8"
+      className={embedded ? 'p-5' : 'details-section mb-8 rounded-xl p-6 md:p-8'}
     >
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
