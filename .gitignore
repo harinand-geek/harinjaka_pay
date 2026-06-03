@@ -1,0 +1,13 @@
+# Deployment artifacts (contain real .env with secrets)
+/_deploy/
+*.zip
+
+# Env files with secrets (subfolders have their own ignores too)
+**/.env
+backend/.env.production
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

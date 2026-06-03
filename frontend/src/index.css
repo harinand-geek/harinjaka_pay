@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* Enable a class-based dark mode toggle (instead of prefers-color-scheme only). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Surfaces & neutrals */
+  --color-bg: #f6f6f4;
+  --color-surface: #ffffff;
+  --color-surface-2: #fafaf9;
+  --color-line: #e7e5e4;
+  --color-line-strong: #d6d3d1;
+
+  /* Ink */
+  --color-ink: #1c1917;
+  --color-ink-soft: #57534e;
+  --color-ink-muted: #79716b;
+
+  /* Single brand accent */
+  --color-accent: #047857;
+  --color-accent-hover: #065f46;
+  --color-accent-soft: #ecfdf5;
+}
+
+/* Component classes read these; they alias the Tailwind color tokens so a
+   single dark override (below) flips both utilities and component styles. */
+:root {
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --surface-2: var(--color-surface-2);
+  --line: var(--color-line);
+  --line-strong: var(--color-line-strong);
+  --ink: var(--color-ink);
+  --ink-soft: var(--color-ink-soft);
+  --ink-muted: var(--color-ink-muted);
+  --accent: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  --accent-soft: var(--color-accent-soft);
+  --accent-ring: rgba(4, 120, 87, 0.16);
+}
+
+/* Dark theme — overrides the color tokens; everything else follows. */
+.dark {
+  --color-bg: #0c0b0a;
+  --color-surface: #1a1817;
+  --color-surface-2: #232020;
+  --color-line: #322e2c;
+  --color-line-strong: #46413d;
+  --color-ink: #f5f4f2;
+  --color-ink-soft: #c2bdb7;
+  --color-ink-muted: #8f8983;
+  --color-accent: #34d399;
+  --color-accent-hover: #6ee7b7;
+  --color-accent-soft: rgba(52, 211, 153, 0.14);
+  --accent-ring: rgba(52, 211, 153, 0.24);
+  color-scheme: dark;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.018em;
+  }
+}
+
+@layer components {
+  /* Plain card surface — solid, thin border, soft shadow. No blur, no gradient. */
+  .glass-card,
+  .admin-card,
+  .details-section {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow:
+      0 1px 2px rgba(28, 25, 23, 0.04),
+      0 1px 3px rgba(28, 25, 23, 0.05);
+  }
+
+  .glass-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
+    box-shadow: 0 6px 16px -8px rgba(28, 25, 23, 0.18);
+  }
+
+  .payment-card {
+    position: relative;
+    cursor: pointer;
+  }
+  .payment-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+
+  .copy-btn {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .copy-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* Primary action — solid ink, inverts with the theme (dark text on light in
+     dark mode), so it always contrasts against its label. */
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .btn-primary:hover {
+    opacity: 0.88;
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+  .btn-primary:disabled {
+    opacity: 0.55;
+  }
+
+  .footer-line {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+  }
+
+  .field-input {
+    width: 100%;
+    border-radius: 0.6rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    color: var(--ink);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field-input::placeholder {
+    color: var(--ink-muted);
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+  }
+}
+
+/* Neutral scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b8b3ad;
+  background-clip: padding-box;
+}

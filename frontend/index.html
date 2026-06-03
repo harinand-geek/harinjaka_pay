@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>Moyens de paiement — Digital Subscription Madagascar</title>
+    <meta
+      name="description"
+      content="Réglez vos abonnements et services Digital Subscription Madagascar : Airtel Money, MVola, Orange Money et virement bancaire. Coordonnées à copier en un clic."
+    />
+    <link rel="canonical" href="https://pay.digitalsub.org/" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Digital Subscription Madagascar" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/digitalsub_icon.png" />
+    <link rel="apple-touch-icon" href="/digitalsub_icon.png" />
+
+    <!-- Theme color (adapts to light/dark) -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f6f4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0b0a" />
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Digital Subscription Madagascar" />
+    <meta property="og:title" content="Moyens de paiement — Digital Subscription Madagascar" />
+    <meta
+      property="og:description"
+      content="Airtel Money, MVola, Orange Money et virement bancaire. Choisissez un moyen de paiement et copiez les coordonnées en un clic."
+    />
+    <meta property="og:url" content="https://pay.digitalsub.org/" />
+    <meta property="og:image" content="https://pay.digitalsub.org/social.png" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="945" />
+    <meta property="og:image:alt" content="Digital Subscription Madagascar — Moyens de paiement" />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Moyens de paiement — Digital Subscription Madagascar" />
+    <meta
+      name="twitter:description"
+      content="Airtel Money, MVola, Orange Money et virement bancaire. Coordonnées à copier en un clic."
+    />
+    <meta name="twitter:image" content="https://pay.digitalsub.org/social.png" />
+    <meta name="twitter:image:alt" content="Digital Subscription Madagascar — Moyens de paiement" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Digital Subscription Madagascar",
+        "url": "https://pay.digitalsub.org/",
+        "logo": "https://pay.digitalsub.org/digitalsub_icon.png",
+        "image": "https://pay.digitalsub.org/social.png",
+        "email": "contact@harinjaka.mg",
+        "telephone": "+261381718189",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ambohijanahary",
+          "addressLocality": "Antananarivo",
+          "addressCountry": "MG"
+        }
+      }
+    </script>
+
+    <script>
+      // Apply the saved theme before paint to avoid a flash of the wrong theme.
+      try {
+        var t = localStorage.getItem('theme')
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark')
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

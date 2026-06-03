@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interface de paiement moderne pour Harinjaka - Services digitaux à Madagascar">
+    <meta name="keywords"
+        content="paiement, virement bancaire, airtel money, mvola, orange money, Madagascar, Harinjaka">
+    <meta name="author" content="Harinjaka">
+    <meta name="theme-color" content="#6366f1">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://payment.harinjaka.mg/">
+    <meta property="og:title" content="Paiement - Digital Subscription Madagascar | Services Digitaux">
+    <meta property="og:description"
+        content="Payez facilement avec Airtel Money, MVola, Orange Money ou virement bancaire BRED. Interface moderne et sécurisée pour tous vos paiements à Madagascar.">
+    <meta property="og:image" content="assets/images/opengraph.jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Digital Subscription Madagascar">
+    <meta property="og:locale" content="fr_MG">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://payment.harinjaka.mg/">
+    <meta name="twitter:title" content="Paiement - Digital Subscription Madagascar | Services Digitaux">
+    <meta name="twitter:description"
+        content="Payez facilement avec Airtel Money, MVola, Orange Money ou virement bancaire BRED. Interface moderne et sécurisée.">
+    <meta name="twitter:image" content="assets/images/opengraph.jpeg">
+    <meta name="twitter:creator" content="@HarinjakaANDRI1">
+    <meta name="twitter:site" content="@HarinjakaANDRI1">
+
+    <!-- WhatsApp / Telegram -->
+    <meta property="og:image:alt" content="Page de paiement Harinjaka - Airtel Money, MVola, Orange Money, BRED">
+
+    <!-- Additional SEO -->
+    <link rel="canonical" href="https://payment.harinjaka.mg/">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="French">
+
+    <link rel="icon" type="image/png" href="frontend/public/digitalsub_icon.png">
+    <title>Paiement - Digital Subscription Madagascar</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 50%, #312e81 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .payment-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .payment-card:hover::before {
+            left: 100%;
+        }
+
+        .payment-card.selected {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            transform: scale(1.02);
+        }
+
+        .details-section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .copy-btn {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(99, 102, 241, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .notification {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .footer {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .animate-pulse-custom {
+            animation: pulse 2s infinite;
+        }
+
+        .icon-glow {
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+    </style>
+</head>
+
+<body class="text-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <div class="text-center py-12">
+            <h1
+                class="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                Paiement
+            </h1>
+            <p class="text-xl text-indigo-200 font-light">Choisissez votre méthode de paiement</p>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="max-w-6xl mx-auto px-6 flex-1">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Airtel Money -->
+                <button class="payment-card glass-card p-6 rounded-3xl" onclick="selectPayment('airtel')">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mobile-alt text-2xl icon-glow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Airtel Money</h3>
+                        <p class="text-indigo-300 text-sm mb-3">Mobile Money Airtel</p>
+                        <span class="px-3 py-1 bg-red-500 text-white text-xs rounded-full animate-pulse-custom">
+                            NOUVEAU
+                        </span>
+                    </div>
+                </button>
+
+                <!-- MVola -->
+                <button class="payment-card glass-card p-6 rounded-3xl" onclick="selectPayment('mvola')">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mobile-alt text-2xl icon-glow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">MVola</h3>
+                        <p class="text-indigo-300 text-sm mb-3">Mobile Money Yas</p>
+                        <span
+                            class="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full border border-orange-500/30">
+                            POPULAIRE
+                        </span>
+                    </div>
+                </button>
+
+                <!-- Orange Money -->
+                <button class="payment-card glass-card p-6 rounded-3xl" onclick="selectPayment('orange')">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-orange-600 to-orange-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mobile-alt text-2xl icon-glow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Orange Money</h3>
+                        <p class="text-indigo-300 text-sm mb-3">Mobile Money Orange</p>
+                        <span
+                            class="px-3 py-1 bg-orange-600/20 text-orange-300 text-xs rounded-full border border-orange-600/30">
+                            FIABLE
+                        </span>
+                    </div>
+                </button>
+
+                <!-- BRED Bank -->
+                <button class="payment-card glass-card p-6 rounded-3xl" onclick="selectPayment('bred')">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-university text-2xl icon-glow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">BRED Madagasikara</h3>
+                        <p class="text-indigo-300 text-sm mb-3">Virement bancaire</p>
+                        <span
+                            class="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">
+                            PRINCIPAL
+                        </span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Airtel Money Details -->
+            <div id="airtelDetails" class="details-section rounded-3xl p-8 mb-8 hidden">
+                <div class="flex items-center gap-4 mb-8">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold">Airtel Money</h2>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-indigo-300 text-sm font-medium mb-2">NUMÉRO AIRTEL MONEY</p>
+                            <p class="text-2xl font-mono font-bold">+261 33 59 493 64</p>
+                            <p class="text-indigo-400 mt-2">Nom: HARINJAKA</p>
+                        </div>
+                        <button class="copy-btn p-4 rounded-xl" onclick="copyToClipboard('+261335949364')">
+                            <i class="fas fa-copy text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MVola Details -->
+            <div id="mvolaDetails" class="details-section rounded-3xl p-8 mb-8 hidden">
+                <div class="flex items-center gap-4 mb-8">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold">MVola</h2>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-indigo-300 text-sm font-medium mb-2">NUMÉRO MVOLA</p>
+                            <p class="text-2xl font-mono font-bold">+261 38 17 181 89</p>
+                            <p class="text-indigo-400 mt-2">Nom: HARINJAKA</p>
+                        </div>
+                        <button class="copy-btn p-4 rounded-xl" onclick="copyToClipboard('+261381718189')">
+                            <i class="fas fa-copy text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orange Money Details -->
+            <div id="orangeDetails" class="details-section rounded-3xl p-8 mb-8 hidden">
+                <div class="flex items-center gap-4 mb-8">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-orange-600 to-orange-700 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold">Orange Money</h2>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-indigo-300 text-sm font-medium mb-2">NUMÉRO ORANGE MONEY</p>
+                            <p class="text-2xl font-mono font-bold">+261 37 66 242 70</p>
+                            <p class="text-indigo-400 mt-2">Nom: HARINJAKA</p>
+                        </div>
+                        <button class="copy-btn p-4 rounded-xl" onclick="copyToClipboard('+261376624270')">
+                            <i class="fas fa-copy text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BRED Details -->
+            <div id="bredDetails" class="details-section rounded-3xl p-8 mb-8 hidden">
+                <div class="flex items-center gap-4 mb-8">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-university text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold">BRED Madagasikara BP</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">TITULAIRE</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">ANDRIANANJA HARINJAKA</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('ANDRIANANJA HARINJAKA')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">DOMICILIATION</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">DIGUE - BRED</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('DIGUE - BRED')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">CODE BANQUE</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">00008</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('00008')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">CODE GUICHET</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">00014</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('00014')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">N° COMPTE</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">05001528033</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('05001528033')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">CLÉ RIB</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">47</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('47')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl md:col-span-2">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">IBAN</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">MG46 00008 00014 05001528033 47</span>
+                            <button class="copy-btn p-3 rounded-xl"
+                                onclick="copyToClipboard('MG46 00008 00014 05001528033 47')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl md:col-span-2">
+                        <p class="text-indigo-300 text-sm font-medium mb-3">BIC / SWIFT</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-lg">BFAVMGMG</span>
+                            <button class="copy-btn p-3 rounded-xl" onclick="copyToClipboard('BFAVMGMG')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer mt-20 py-12">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="grid md:grid-cols-3 gap-12">
+                    <!-- Contact -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                            <i class="fas fa-phone-alt text-indigo-400"></i>
+                            Contact Direct
+                        </h3>
+                        <div class="space-y-4">
+                            <a href="tel:+261381718189"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fas fa-phone text-green-400 w-5"></i>
+                                <span>+261 38 17 181 89</span>
+                            </a>
+                            <a href="https://wa.me/261376474270"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fab fa-whatsapp text-green-400 w-5"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                            <a href="mailto:contact@harinjaka.mg"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fas fa-envelope text-blue-400 w-5"></i>
+                                <span>contact@harinjaka.mg</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Réseaux Sociaux -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                            <i class="fas fa-share-alt text-purple-400"></i>
+                            Réseaux Sociaux
+                        </h3>
+                        <div class="space-y-4">
+                            <a href="https://web.facebook.com/harinjaka.andriananja" target="_blank"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fab fa-facebook text-[#1877f2] w-5"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://x.com/HarinjakaANDRI1" target="_blank"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fab fa-x-twitter w-5"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/harinjaka-andriananja" target="_blank"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fab fa-linkedin text-[#0077b5] w-5"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                            <i class="fas fa-cube text-yellow-400"></i>
+                            Services
+                        </h3>
+                        <div class="space-y-4">
+                            <a href="https://shop.harinjaka.mg"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fas fa-shopping-cart text-green-400 w-5"></i>
+                                <span>Shop</span>
+                            </a>
+                            <a href="https://blog.harinjaka.mg"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fas fa-blog text-blue-400 w-5"></i>
+                                <span>Blog</span>
+                            </a>
+                            <a href="https://qrcode.harinjaka.mg"
+                                class="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                                <i class="fas fa-qrcode text-purple-400 w-5"></i>
+                                <span>QrCode</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-red-400"></i>
+                            <span>Ambohijanahary Antananarivo, Madagascar</span>
+                        </div>
+                        <div class="hidden md:block w-1 h-1 bg-gray-600 rounded-full"></div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-clock text-green-400"></i>
+                            <span>Lun-Ven: 8h-20h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="fixed top-6 right-6 notification px-6 py-4 rounded-2xl hidden z-50">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-check-circle text-xl"></i>
+            <span class="font-medium">Copié dans le presse-papier !</span>
+        </div>
+    </div>
+
+    <script>
+        let activePayment = null;
+        let copyTimeout = null;
+
+        function selectPayment(method) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.payment-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Hide all details sections
+            document.querySelectorAll('.details-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+
+            // Show corresponding details section
+            let detailsId;
+            switch (method) {
+                case 'airtel':
+                    detailsId = 'airtelDetails';
+                    break;
+                case 'mvola':
+                    detailsId = 'mvolaDetails';
+                    break;
+                case 'orange':
+                    detailsId = 'orangeDetails';
+                    break;
+                case 'bred':
+                    detailsId = 'bredDetails';
+                    break;
+            }
+
+            const detailsSection = document.getElementById(detailsId);
+            detailsSection.classList.remove('hidden');
+
+            // Smooth scroll to details
+            setTimeout(() => {
+                detailsSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+
+            activePayment = method;
+        }
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showNotification(true);
+            } catch (err) {
+                console.error('Erreur de copie:', err);
+                showNotification(false);
+            }
+        }
+
+        function showNotification(success = true) {
+            const notification = document.getElementById('notification');
+
+            if (success) {
+                notification.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-xl"></i>
+                        <span class="font-medium">Copié dans le presse-papier !</span>
+                    </div>
+                `;
+                notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            } else {
+                notification.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-exclamation-circle text-xl"></i>
+                        <span class="font-medium">Erreur de copie</span>
+                    </div>
+                `;
+                notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+            }
+
+            notification.classList.remove('hidden');
+
+            if (copyTimeout) clearTimeout(copyTimeout);
+
+            copyTimeout = setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
+        // No default selection - let the client choose
+        document.addEventListener('DOMContentLoaded', () => {
+            // Page loads without any payment method selected
+            console.log('Page loaded - Please select your payment method');
+        });
+    </script>
+</body>
+
+</html>
