@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import { Inbox, Loader2, WifiOff } from 'lucide-react'
@@ -12,6 +12,7 @@ import ThemeToggle from '@/components/ThemeToggle'
 
 export default function PaymentPage() {
   const [selectedId, setSelectedId] = useState<number | null>(null)
+  const detailsRef = useRef<HTMLDivElement>(null)
 
   const { data: methods, isLoading, isError } = useQuery({
     queryKey: ['public-payment-methods'],
@@ -22,8 +23,18 @@ export default function PaymentPage() {
     void analyticsApi.trackVisit()
   }, [])
 
+  // Bring the details into view on selection — essential on mobile where the
+  // cards are stacked and the details would otherwise render far below.
+  useEffect(() => {
+    if (selectedId == null) return
+    const el = detailsRef.current
+    if (!el) return
+    requestAnimationFrame(() =>
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    )
+  }, [selectedId])
+
   const handleSelect = (method: PaymentMethod) => {
-    // Just reveal the details in place — no page scroll, the page stays put.
     setSelectedId(method.id)
     void analyticsApi.trackEvent(method.id, 'view_method')
   }
@@ -93,7 +104,7 @@ export default function PaymentPage() {
               ))}
             </div>
 
-            <div>
+            <div ref={detailsRef} className="scroll-mt-6">
               <AnimatePresence mode="wait">
                 {selected && <PaymentDetails key={selected.id} method={selected} />}
               </AnimatePresence>
